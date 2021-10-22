@@ -1,14 +1,19 @@
-create table dbo.Department (
+CREATE SCHEMA emps;
+
+create table dbo.Department(
 DepartmentId int identity(1,1),
 DepartmentName varchar(500)
 )
 
 select * from dbo.Department;
+select DepartmentId, DepartmentName from dbo.Department1
 
-insert into dbo.Department values ('IT');
-insert into dbo.Department values ('Operations');
+insert into dbo.Department values (
+'IT');
+insert into dbo.Department values (
+'Operations');
 
-create table dbo.Employee (
+create table dbo.Employee(
 EmployeeId int identity(1,1),
 EmployeeName varchar(500),
 Department varchar(500),
@@ -16,6 +21,18 @@ DateOfJoining date,
 PhotoFileName varchar(500)
 )
 
-insert into dbo.Employee values ('Sam','IT','2021-01-05','anonymous.png');
+insert into dbo.Employee values ('Sam','IT','2021-04-22','anonymous.png');
 
 select * from dbo.Employee;
+
+SELECT * FROM   INFORMATION_SCHEMA.TABLES;
+select * from master.sys.databases order by name
+
+
+select schema_name(t.schema_id) as schema_name,
+       t.name as table_name,
+       t.create_date,
+       t.modify_date
+from sys.tables t
+where schema_name(t.schema_id) = 'dbo' -- put schema name here
+order by table_name;
