@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using WebAPI.Models;
 
 namespace WebAPI.Controllers
 {
@@ -42,5 +43,29 @@ namespace WebAPI.Controllers
             return new JsonResult(table);
         }
 
+        [HttpPost]
+        public JsonResult Post(Department department)
+        {
+            string query = @"insert into dbo.Department values ('"+department.DepartmentName+@"')";
+
+            DataTable table = new DataTable();
+            string sqlDataSource = _config.GetConnectionString("EmployeeAppCon");
+
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCmd = new SqlCommand(query, myCon))
+                {
+                    myReader = myCmd.ExecuteReader();
+                    table.Load(myReader);
+
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+
+            return new JsonResult("Added " + department.DepartmentName + " Successfully");
+        }
     }
 }
