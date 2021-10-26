@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using WebAPI.Models;
 
 namespace WebAPI.Controllers
@@ -12,9 +14,11 @@ namespace WebAPI.Controllers
     {
         // to access the config from apps setting we need to make use of dependency injection
         private readonly IConfiguration _config;
-        public EmployeeController(IConfiguration config)
+        private readonly IWebHostEnvironment _env;
+        public EmployeeController(IConfiguration config, IWebHostEnvironment env)
         {
             _config = config;
+            _env = env;
         }
 
         [HttpGet]
@@ -136,6 +140,30 @@ namespace WebAPI.Controllers
             }
 
             return new JsonResult("Deleted Employee " + id);
+        }
+
+        [Route("SaveFile")]
+        [HttpPost]
+        public JsonResult SaveFile()
+        {
+            try
+            {
+                var httpRequest = Request.Form;
+                var postedFile = httpRequest.Files[0]; // get file from 1st part of requesr body
+                var fileName = postedFile.FileName;             
+                var physicalPath = _env.ContentRootPath + "/Photos/"+fileName;
+
+                using (var stream = new FileStream(physicalPath, FileMode.Create))
+                {
+                    postedFile.CopyTo(stream);
+                }
+
+                return new JsonResult(fileName);
+            }
+            catch (System.Exception)
+            {
+                return new JsonResult("anonymous.png");
+            }
         }
 
     }
