@@ -3,6 +3,7 @@ import {Table} from 'react-bootstrap';
 
 import {Button, ButtonToolbar} from 'react-bootstrap';
 import {AddDepModal} from './AddDepModal';
+import {EditDepModal} from './EditDepModal';
 
 export class Department extends Component {
     
@@ -22,11 +23,6 @@ export class Department extends Component {
         });
     }
 
-    componentWillMount() {
-        console.log("willMount");
-    }
-
-    // lifecycle method used to refresh our list
     componentDidMount() {
         console.log("mount");
         this.refreshList();
@@ -56,7 +52,14 @@ export class Department extends Component {
                         <tr key={dep.DepartmentId}>
                             <td>{dep.DepartmentId}</td>
                             <td>{dep.DepartmentName}</td>
-                            <td>Edit/Del
+                            <td>
+                                <ButtonToolbar>
+                                    <Button className = "mr-2" variant="info" onClick={()=>this.setState({editModalShow:true, depid:dep.DepartmentId, depname:dep.DepartmentName})}>
+                                        Edit
+                                    </Button>
+
+                                    <EditDepModal show={this.state.editModalShow} onHide={editModalClose} depid={depid} depname={depname}/>
+                                </ButtonToolbar>
                             </td>
                         </tr>)}
                     </tbody>
