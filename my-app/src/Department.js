@@ -15,7 +15,7 @@ export class Department extends Component {
     }
 
     refreshList() {
-        console.log("refresh"+process.env.REACT_APP_API);
+        console.log("refresh "+process.env.REACT_APP_API);
         fetch("http://localhost:14763/api/department")       //process.env.REACT_APP_API+"department")
         .then(response=>response.json())
         .then(data=>{   // data is available so save it in the state
@@ -31,6 +31,17 @@ export class Department extends Component {
     componentDidUpdate() {
         console.log("update");
         this.refreshList();
+    }
+
+    deleteDep(depid) {
+        if (window.confirm("Delete it?")) {
+            fetch("http://localhost:14763/api/department/"+depid,
+                {
+                    method:'DELETE',
+                    header:{'Accept':'application/json','Content-Type':'application/json'
+                }
+            })
+        }
     }
 
     render() {
@@ -56,6 +67,9 @@ export class Department extends Component {
                                 <ButtonToolbar>
                                     <Button className = "mr-2" variant="info" onClick={()=>this.setState({editModalShow:true, depid:dep.DepartmentId, depname:dep.DepartmentName})}>
                                         Edit
+                                    </Button>
+                                    <Button className = "mr-2" variant="danger" onClick={()=>this.deleteDep(dep.DepartmentId)}>
+                                        X
                                     </Button>
 
                                     <EditDepModal show={this.state.editModalShow} onHide={editModalClose} depid={depid} depname={depname}/>
