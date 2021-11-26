@@ -14,9 +14,9 @@ export class Department extends Component {
         console.log("const");
     }
 
+
     refreshList() {
-        console.log("refresh "+process.env.REACT_APP_API);
-        fetch("http://localhost:14763/api/department")       //process.env.REACT_APP_API+"department")
+        fetch(process.env.REACT_APP_API+"department")
         .then(response=>response.json())
         .then(data=>{   // data is available so save it in the state
             this.setState({deps:data});
@@ -24,18 +24,16 @@ export class Department extends Component {
     }
 
     componentDidMount() {
-        console.log("mount");
         this.refreshList();
     }
 
     componentDidUpdate() {
-        console.log("update");
         this.refreshList();
     }
 
     deleteDep(depid) {
         if (window.confirm("Delete it?")) {
-            fetch("http://localhost:14763/api/department/"+depid,
+            fetch(process.env.REACT_APP_API+"department/"+depid,
                 {
                     method:'DELETE',
                     header:{'Accept':'application/json','Content-Type':'application/json'
