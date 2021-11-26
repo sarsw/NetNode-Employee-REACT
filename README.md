@@ -7,10 +7,10 @@ I built on the Udemy training courses I've done on NodeJS and REACT.  I've writt
 
 Tools Used:
 
-C# WebAPI : Visual Studio 2022 Community Ed
-Testing API : Postman
-NodeJS/Javascript : Visual Studio Code
-DB Admin : MSSQL Server Managment Studio 18
+1) C# WebAPI : Visual Studio 2022 Community Ed,
+2) Testing API : Postman,
+3) NodeJS/Javascript : Visual Studio Code,
+4) DB Admin : MSSQL Server Managment Studio 18
 
 package.json shows the react and bootsrap dependencies.
 
